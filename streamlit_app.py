@@ -54,16 +54,14 @@ with col1:
             st.warning("Please provide your API key to proceed.")
         else:
             try:
-                # Convert uploaded images to base64 strings to include in prompt (if any images are uploaded)
+                # Convert uploaded images to base64 strings and add descriptions to include in prompt (if any images are uploaded)
                 image_descriptions = []
                 image_summary = "N/A"
-                encoded_images = []
                 if uploaded_images:
                     for img in uploaded_images:
                         img_bytes = img.read()
                         encoded_img = base64.b64encode(img_bytes).decode('utf-8')
-                        encoded_images.append({"name": img.name, "content": encoded_img})
-                        image_descriptions.append(f"Image: {img.name} (encoded)")
+                        image_descriptions.append(f"Image: {img.name} (encoded as base64)")
                     images_text = "\n".join(image_descriptions)
                     image_summary = "The uploaded images suggest a preference for certain colors, textures, or styles that have been incorporated into the design recommendations."
                 else:
@@ -95,8 +93,6 @@ with col1:
                         {"role": "user", "content": prompt}
                     ]
                 }
-                if encoded_images:
-                    data["files"] = encoded_images
 
                 response = requests.post("https://api.openai.com/v1/chat/completions", json=data, headers=headers, timeout=60)
 
@@ -110,18 +106,3 @@ with col1:
                         st.subheader("ChatGPT Response")
                         st.write(human_summary.strip())
                 else:
-                    with col2:
-                        st.error(f"Error: {response.status_code}, {response.text}")
-
-            except requests.exceptions.RequestException as e:
-                st.error(f"An error occurred: {e}")
-
-            # Display the entire request and response for debugging purposes
-            with st.expander("Debugging Information"):
-                st.subheader("Request Data")
-                st.json(data)
-                st.subheader("Response Data")
-                if response.status_code == 200:
-                    st.json(response.json())
-                else:
-                    st.text(response.text)
