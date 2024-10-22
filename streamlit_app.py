@@ -95,3 +95,14 @@ with col1:
                     st.json(response.json())
                 else:
                     st.text(response.text)
+
+    # Button to autofill placeholders for testing
+    if st.button("Autofill Placeholder Values"):
+        vision_goals = st.session_state.vision_goals = "I’m aiming for a fresh, functional design that suits my lifestyle and personal taste."
+        primary_function = st.session_state.primary_function = "This will be a multi-purpose room used for both work and relaxation."
+        traffic = st.session_state.traffic = "It will have moderate traffic throughout the day."
+        children_use = st.session_state.children_use = "Yes, this space needs to be kid-friendly and safe."
+        personal_shared = st.session_state.personal_shared = "This room will be shared with family and occasional guests."
+        atmosphere = st.session_state.atmosphere = "I’d like it to feel serene and inviting, but also energizing."
+        budget = st.session_state.budget = "I’m looking to stay within a mid-range budget, but open to flexibility."
+        existing_pieces = st.session_state.existing_pieces = "I’d like to keep a few key pieces of furniture and some family heirlooms."
