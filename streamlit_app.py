@@ -74,7 +74,7 @@ with col1:
                     atmosphere=atmosphere,
                     budget=budget,
                     existing_pieces=existing_pieces,
-                    uploaded_images="Images provided"
+                    uploaded_images=image_summary
                 )
                 prompt = f"{context}\n\n{prompt}"
 
@@ -101,12 +101,16 @@ with col1:
                 # Handle API Response
                 if response.status_code == 200:
                     chat_response = response.json().get("choices", [])[0].get("message", {}).get("content", "No response from API.")
-                    key_elements, human_summary = chat_response.split("Human-Like Summary for Customer:")
-                    with col2:
-                        st.subheader("Key Elements Summary")
-                        st.write(key_elements.strip())
-                        st.subheader("ChatGPT Response")
-                        st.write(human_summary.strip())
+                    if "Human-Like Summary for Customer:" in chat_response:
+                        key_elements, human_summary = chat_response.split("Human-Like Summary for Customer:")
+                        with col2:
+                            st.subheader("Key Elements Summary")
+                            st.write(key_elements.strip())
+                            st.subheader("ChatGPT Response")
+                            st.write(human_summary.strip())
+                    else:
+                        with col2:
+                            st.write(chat_response)
                 else:
                     with col2:
                         st.error(f"Error: {response.status_code}, {response.text}")
