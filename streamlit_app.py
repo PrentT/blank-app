@@ -55,17 +55,14 @@ with col1:
         else:
             try:
                 # Convert uploaded images to base64 strings and add descriptions to include in prompt (if any images are uploaded)
-                image_descriptions = []
+                image_contents = []
                 image_summary = "N/A"
                 if uploaded_images:
                     for img in uploaded_images:
                         img_bytes = img.read()
                         encoded_img = base64.b64encode(img_bytes).decode('utf-8')
-                        image_descriptions.append(f"Image: {img.name} (encoded as base64)")
-                    images_text = "\n".join(image_descriptions)
+                        image_contents.append({"type": "image_base64", "image_base64": {"data": encoded_img}})
                     image_summary = "The uploaded images suggest a preference for certain colors, textures, or styles that have been incorporated into the design recommendations."
-                else:
-                    images_text = "N/A"
 
                 # Use customer's answers to set up the message
                 prompt = chat_message.format(
@@ -77,8 +74,7 @@ with col1:
                     atmosphere=atmosphere,
                     budget=budget,
                     existing_pieces=existing_pieces,
-                    uploaded_images=images_text,
-                    image_summary=image_summary
+                    uploaded_images="Images provided"
                 )
                 prompt = f"{context}\n\n{prompt}"
 
@@ -90,7 +86,13 @@ with col1:
                 data = {
                     "model": "gpt-4o",
                     "messages": [
-                        {"role": "user", "content": prompt}
+                        {
+                            "role": "user",
+                            "content": [
+                                {"type": "text", "text": prompt},
+                                *image_contents
+                            ]
+                        }
                     ]
                 }
 
