@@ -12,22 +12,32 @@ col1, col2 = st.columns(2)
 # Placeholder questions in the left column
 with col1:
     st.header("General Overview")
-    vision_goals = st.text_area("Can you describe your vision or goals for this project?", placeholder="I’m aiming for a fresh, functional design that suits my lifestyle and personal taste.")
+    if st.button("Autofill Placeholder Values"):
+        st.session_state["vision_goals"] = "I’m aiming for a fresh, functional design that suits my lifestyle and personal taste."
+        st.session_state["primary_function"] = "This will be a multi-purpose room used for both work and relaxation."
+        st.session_state["traffic"] = "It will have moderate traffic throughout the day."
+        st.session_state["children_use"] = "Yes, this space needs to be kid-friendly and safe."
+        st.session_state["personal_shared"] = "This room will be shared with family and occasional guests."
+        st.session_state["atmosphere"] = "I’d like it to feel serene and inviting, but also energizing."
+        st.session_state["budget"] = "I’m looking to stay within a mid-range budget, but open to flexibility."
+        st.session_state["existing_pieces"] = "I’d like to keep a few key pieces of furniture and some family heirlooms."
+
+    vision_goals = st.text_area("Can you describe your vision or goals for this project?", key="vision_goals", placeholder="I’m aiming for a fresh, functional design that suits my lifestyle and personal taste.")
 
     st.header("Room Use & Function")
-    primary_function = st.text_input("What is the primary function of this space?", placeholder="This will be a multi-purpose room used for both work and relaxation.")
-    traffic = st.text_input("How much daily traffic does this room get?", placeholder="It will have moderate traffic throughout the day.")
-    children_use = st.text_input("Will children use this room? If so, what should be considered for them?", placeholder="Yes, this space needs to be kid-friendly and safe.")
-    personal_shared = st.text_input("Will this space be primarily for personal use, or shared?", placeholder="This room will be shared with family and occasional guests.")
+    primary_function = st.text_input("What is the primary function of this space?", key="primary_function", placeholder="This will be a multi-purpose room used for both work and relaxation.")
+    traffic = st.text_input("How much daily traffic does this room get?", key="traffic", placeholder="It will have moderate traffic throughout the day.")
+    children_use = st.text_input("Will children use this room? If so, what should be considered for them?", key="children_use", placeholder="Yes, this space needs to be kid-friendly and safe.")
+    personal_shared = st.text_input("Will this space be primarily for personal use, or shared?", key="personal_shared", placeholder="This room will be shared with family and occasional guests.")
 
     st.header("Emotions")
-    atmosphere = st.text_input("What feeling or atmosphere do you want this space to create?", placeholder="I’d like it to feel serene and inviting, but also energizing.")
+    atmosphere = st.text_input("What feeling or atmosphere do you want this space to create?", key="atmosphere", placeholder="I’d like it to feel serene and inviting, but also energizing.")
 
     st.header("Budget")
-    budget = st.text_input("Do you have a budget in mind for this project?", placeholder="I’m looking to stay within a mid-range budget, but open to flexibility.")
+    budget = st.text_input("Do you have a budget in mind for this project?", key="budget", placeholder="I’m looking to stay within a mid-range budget, but open to flexibility.")
 
     st.header("Existing Furniture/Items")
-    existing_pieces = st.text_area("Are there any existing pieces or elements you’d like to incorporate into the design?", placeholder="I’d like to keep a few key pieces of furniture and some family heirlooms.")
+    existing_pieces = st.text_area("Are there any existing pieces or elements you’d like to incorporate into the design?", key="existing_pieces", placeholder="I’d like to keep a few key pieces of furniture and some family heirlooms.")
 
     st.header("Upload Images")
     uploaded_images = st.file_uploader("Upload images that represent the style and vibe you want for this project", accept_multiple_files=True, type=['jpg', 'jpeg', 'png'])
@@ -95,14 +105,3 @@ with col1:
                     st.json(response.json())
                 else:
                     st.text(response.text)
-
-    # Button to autofill placeholders for testing
-    if st.button("Autofill Placeholder Values"):
-        vision_goals = st.session_state.vision_goals = "I’m aiming for a fresh, functional design that suits my lifestyle and personal taste."
-        primary_function = st.session_state.primary_function = "This will be a multi-purpose room used for both work and relaxation."
-        traffic = st.session_state.traffic = "It will have moderate traffic throughout the day."
-        children_use = st.session_state.children_use = "Yes, this space needs to be kid-friendly and safe."
-        personal_shared = st.session_state.personal_shared = "This room will be shared with family and occasional guests."
-        atmosphere = st.session_state.atmosphere = "I’d like it to feel serene and inviting, but also energizing."
-        budget = st.session_state.budget = "I’m looking to stay within a mid-range budget, but open to flexibility."
-        existing_pieces = st.session_state.existing_pieces = "I’d like to keep a few key pieces of furniture and some family heirlooms."
