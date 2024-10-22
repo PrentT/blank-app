@@ -106,3 +106,18 @@ with col1:
                         st.subheader("ChatGPT Response")
                         st.write(human_summary.strip())
                 else:
+                    with col2:
+                        st.error(f"Error: {response.status_code}, {response.text}")
+
+            except requests.exceptions.RequestException as e:
+                st.error(f"An error occurred: {e}")
+
+            # Display the entire request and response for debugging purposes
+            with st.expander("Debugging Information"):
+                st.subheader("Request Data")
+                st.json(data)
+                st.subheader("Response Data")
+                if response.status_code == 200:
+                    st.json(response.json())
+                else:
+                    st.text(response.text)
